@@ -259,7 +259,7 @@ top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = src
 dist_doc_DATA = README NEWS COPYING Understanding_Hash_Functions \
-	dev/basics.cc dev/builder dev/builder.cc dev/cmake_m32 \
+	dev/basics.cc dev/builder.cc dev/cmake_m32 \
 	dev/create-self-test dev/do-in-parallel dev/farmhashcc.cc \
 	dev/farmhash.h dev/farmhashmk.cc dev/farmhashna.cc \
 	dev/farmhashns.cc dev/farmhashsa.cc dev/farmhashsu.cc dev/f.cc \
