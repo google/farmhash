@@ -181,7 +181,7 @@ inline uint64_t Fingerprint(uint64_t x) {
 // (as a const char*) and that Str::length() return the string's length;
 // they work with std::string, for example.
 
-// Hash function for a byte array.  Most useful in 32-bit binaries.
+// Hash function for a byte array.
 // May change from time to time, may differ on different platforms, may differ
 // depending on NDEBUG.
 template <typename Str>
