@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Delete lines in a file from the first occurrence of
+# $1 to the first occurrence of $2, inclusive.  The file to
+# operate on is $3.  Both strings must appear in the file,
+# and the first string must appear first (or on the same line).
+# $1 and $2 are regular expressions.
+
 die() {
   echo $*
   exit 1

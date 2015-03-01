@@ -3,6 +3,16 @@
 // (or its equivalent for your compiler); if you use -DFARMHASH_ASSUME_AESNI
 // you likely need -maes (or its equivalent for your compiler).
 
+#ifdef FARMHASH_ASSUME_SSSE3
+#undef FARMHASH_ASSUME_SSSE3
+#define FARMHASH_ASSUME_SSSE3 1
+#endif
+
+#ifdef FARMHASH_ASSUME_SSE41
+#undef FARMHASH_ASSUME_SSE41
+#define FARMHASH_ASSUME_SSE41 1
+#endif
+
 #ifdef FARMHASH_ASSUME_SSE42
 #undef FARMHASH_ASSUME_SSE42
 #define FARMHASH_ASSUME_SSE42 1
@@ -11,6 +21,11 @@
 #ifdef FARMHASH_ASSUME_AESNI
 #undef FARMHASH_ASSUME_AESNI
 #define FARMHASH_ASSUME_AESNI 1
+#endif
+
+#ifdef FARMHASH_ASSUME_AVX
+#undef FARMHASH_ASSUME_AVX
+#define FARMHASH_ASSUME_AVX 1
 #endif
 
 #if !defined(FARMHASH_CAN_USE_CXX11) && defined(LANG_CXX11)
@@ -35,7 +50,7 @@
 // FARMHASH PORTABILITY LAYER: LIKELY and UNLIKELY
 
 #if !defined(LIKELY)
-#if defined(FARMHASH_OPTIONAL_BUILTIN_EXPECT) && !defined(HAVE_BUILTIN_EXPECT)
+#if defined(FARMHASH_NO_BUILTIN_EXPECT) || (defined(FARMHASH_OPTIONAL_BUILTIN_EXPECT) && !defined(HAVE_BUILTIN_EXPECT))
 #define LIKELY(x) (x)
 #else
 #define LIKELY(x) (__builtin_expect(!!(x), 1))
@@ -239,6 +254,28 @@ STATIC_INLINE uint64_t Rotate64(uint64_t val, int shift) {
 #define is_64bit (x86_64 || (sizeof(void*) == 8))
 #endif
 
+#undef can_use_ssse3
+#if defined(__SSSE3__) || defined(FARMHASH_ASSUME_SSSE3)
+
+#include <immintrin.h>
+#define can_use_ssse3 1
+// Now we can use _mm_hsub_epi16 and so on.
+
+#else
+#define can_use_ssse3 0
+#endif
+
+#undef can_use_sse41
+#if defined(__SSE4_1__) || defined(FARMHASH_ASSUME_SSE41)
+
+#include <immintrin.h>
+#define can_use_sse41 1
+// Now we can use _mm_insert_epi64 and so on.
+
+#else
+#define can_use_sse41 0
+#endif
+
 #undef can_use_sse42
 #if defined(__SSE4_2__) || defined(FARMHASH_ASSUME_SSE42)
 
@@ -261,8 +298,18 @@ STATIC_INLINE uint64_t Rotate64(uint64_t val, int shift) {
 #define can_use_aesni 0
 #endif
 
-#if can_use_sse42 || can_use_aesni
-STATIC_INLINE __m128i Load128(const char* s) {
+#undef can_use_avx
+#if defined(__AVX__) || defined(FARMHASH_ASSUME_AVX)
+
+#include <immintrin.h>
+#define can_use_avx 1
+
+#else
+#define can_use_avx 0
+#endif
+
+#if can_use_ssse3 || can_use_sse41 || can_use_sse42 || can_use_aesni || can_use_avx
+STATIC_INLINE __m128i Fetch128(const char* s) {
   return _mm_loadu_si128(reinterpret_cast<const __m128i*>(s));
 }
 #endif

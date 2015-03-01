@@ -1,5 +1,5 @@
 FarmHash, a family of hash functions.
-
+Version 1.1
 
 Introduction
 ============
@@ -35,21 +35,28 @@ them would be very different.
 We have provided a sample of these wrapper functions in src/farmhash.h.  Our
 hope is that most people will need nothing more than src/farmhash.h and
 src/farmhash.cc.  Those two files are a usable and relatively portable library.
-For those that prefer using a configure script (perhaps because they want to
-"make install" later), FarmHash has one, but for many people it's best to
-ignore it.
+(One portability snag: if your compiler doesn't have __builtin_expect then
+you may need to define FARMHASH_NO_BUILTIN_EXPECT.)  For those that prefer
+using a configure script (perhaps because they want to "make install" later),
+FarmHash has one, but for many people it's best to ignore it.
 
-To get the best performance from FarmHash, one will need to think a
-bit about when to use -maes and -msse4.2 (or their equivalents for
-other compilers).  Those are the g++ flags that make g++ emit more
-types of machine instructions than it otherwise would.  If you are
-confident that you will only be using FarmHash on systems with SSE4.2
-and/or AES, you may communicate that to the compiler as explained in
-src/farmhash.cc.  If not, use -maes or similar when you can and the
-appropriate choices will be made by via conditional compilation in
-src/farmhash.cc.
+Note that the wrapper functions such as Hash() in src/farmhash.h can select
+one of several hash functions.  The selection is done at compile time, based
+on your machine architecture (e.g., sizeof(size_t)) and the availability of
+vector instructions (e.g., SSE4.1).
 
-It may be beneficial to try -O3 or other compiler flags as well.
+To get the best performance from FarmHash, one will need to think a bit about
+when to use compiler flags that allow vector instructions and such: -maes,
+-msse4.2, -mavx, etc., or their equivalents for other compilers.  Those are
+the g++ flags that make g++ emit more types of machine instructions than it
+otherwise would.  For example, if you are confident that you will only be
+using FarmHash on systems with SSE4.2 and/or AES, you may communicate that to
+the compiler as explained in src/farmhash.cc.  If not, use -maes, -mavx, etc.,
+when you can, and the appropriate choices will be made by via conditional
+compilation in src/farmhash.cc.
+
+It may be beneficial to try -O3 or other compiler flags as well.  I also have
+found feedback-directed optimization (FDO) to improve the speed of FarmHash.
 
 The "configure" script: creating config.h
 =========================================
@@ -59,17 +66,18 @@ C++.  The build system is based on autoconf.  It defaults the C++ compiler
 flags to "-g -O2", which may or may not be best.
 
 If you are planning to use the configure script, I generally recommend
-trying this first, unless you know that your system lacks SSE42 and/or AESNI:
+trying this first, unless you know that your system lacks AVX and/or AESNI:
 
-  ./configure CXXFLAGS="-g -msse4.2 -maes -O3"
+  ./configure CXXFLAGS="-g -mavx -maes -O3"
   make all check
 
-If that fails, you can retry with -msse4.2 and/or -maes removed.
+If that fails, you can retry with -mavx and/or -maes removed, or with -mavx replaced by
+-msse4.1 or -msse4.2.
 
 Please see below for thoughts on cross-platform testing, if that is a concern.
 Finally, if you want to install a library, you may use
 
-  sudo make install
+  make install
 
 Some useful flags for configure include:
 

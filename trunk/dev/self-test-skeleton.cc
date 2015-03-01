@@ -89,10 +89,14 @@ bool Test(int offset, int len = 0) {
 #undef Check
 #undef IsAlive
 
-#define Check(x) do {                           \
-  bool ok = expected[index++] == (x);           \
-  assert(ok);                                   \
-  errors += !ok;                                \
+#define Check(x) do {                                                   \
+  const uint32_t actual = (x), e = expected[index++];                   \
+  bool ok = actual == e;                                                \
+  if (!ok) {                                                            \
+    cerr << "expected " << hex << e << " but got " << actual << endl;   \
+    ++errors;                                                           \
+  }                                                                     \
+  assert(ok);                                                           \
 } while (0)
 
 #define IsAlive(x) do { alive += IsNonZero(x); } while (0)

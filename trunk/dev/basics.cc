@@ -62,7 +62,7 @@ template <> uint128_t DebugTweak(uint128_t x) {
   return x;
 }
 
-}  // namespace NAMESPACE_FOR_HASH_FUNCTIONS;
+}  // namespace NAMESPACE_FOR_HASH_FUNCTIONS
 
 using namespace std;
 using namespace NAMESPACE_FOR_HASH_FUNCTIONS;

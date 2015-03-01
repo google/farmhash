@@ -1,7 +1,7 @@
 UNDERSTANDING HASH FUNCTIONS
 by Geoff Pike
 
-Version 0.1 --- early draft --- comments and questions welcome!
+Version 0.2 --- early draft --- comments and questions welcome!
 References appear in square brackets.
 
 1 INTRODUCTION
@@ -44,12 +44,13 @@ sketch of a string hash is:
     let t = the next c bits of input (padded with zeroes if less than c remain)
     S = M(S xor t)
   }
-  return F(S)
+  let n = the number of bytes hashed
+  return F(S, n)
 
 where M is a hash function that inputs and outputs c bits, and F is a
-hash function that inputs c bits and outputs however many bits one
-needs to return.  In some sense we have reduced the string-hashing
-problem to two integer hashing problems.
+hash function that inputs c bits (plus, say, 64 for its second argument)
+and outputs however many bits one needs to return.  In some sense we have
+reduced the string-hashing problem to two integer hashing problems.
 
 2.1 INTEGER HASHING TECHNIQUES
 
@@ -80,7 +81,7 @@ and outputs fewer than c bits, we can simply truncate the output of a
 high-quality hash function that inputs and outputs c bits.
 
 To give a concrete example, here is Bob Jenkins' mix(), published in
-1996 [Jenkins].  It's input is 96 bits in three 32-bit variables, and its output
+1996 [Jenkins].  Its input is 96 bits in three 32-bit variables, and its output
 is 96 bits.  However, one may use a subset of the output bits, as every
 output bit is affected by every non-empty subset of the input bits.
 
