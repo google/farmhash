@@ -27,17 +27,14 @@ STATIC_INLINE __m128i Xor(__m128i x, __m128i y) { return _mm_xor_si128(x, y); }
 STATIC_INLINE __m128i Or(__m128i x, __m128i y) { return _mm_or_si128(x, y); }
 STATIC_INLINE __m128i Mul(__m128i x, __m128i y) { return _mm_mullo_epi32(x, y); }
 STATIC_INLINE __m128i Mul5(__m128i x) { return Add(x, _mm_slli_epi32(x, 2)); }
-STATIC_INLINE __m128i Rotate(__m128i x, int c) {
+STATIC_INLINE __m128i RotateLeft(__m128i x, int c) {
   return Or(_mm_slli_epi32(x, c),
             _mm_srli_epi32(x, 32 - c));
 }
-STATIC_INLINE __m128i Rot17(__m128i x) { return Rotate(x, 17); }
-STATIC_INLINE __m128i Rot19(__m128i x) { return Rotate(x, 19); }
+STATIC_INLINE __m128i Rol17(__m128i x) { return RotateLeft(x, 17); }
+STATIC_INLINE __m128i Rol19(__m128i x) { return RotateLeft(x, 19); }
 STATIC_INLINE __m128i Shuffle0321(__m128i x) {
   return _mm_shuffle_epi32(x, (0 << 6) + (3 << 4) + (2 << 2) + (1 << 0));
-}
-STATIC_INLINE __m128i Shuffle2031(__m128i x) {
-  return _mm_shuffle_epi32(x, (2 << 6) + (0 << 4) + (3 << 2) + (1 << 0));
 }
 
 uint32_t Hash32(const char *s, size_t len) {
@@ -77,10 +74,10 @@ uint32_t Hash32(const char *s, size_t len) {
 #define Murk(a, h)                              \
   Add(k,                                        \
       Mul5(                                     \
-          Rot19(                                \
+          Rol19(                                \
               Xor(                              \
                   Mulc2(                        \
-                      Rot17(                    \
+                      Rol17(                    \
                           Mulc1(a))),           \
                   (h)))))
 
@@ -92,11 +89,11 @@ uint32_t Hash32(const char *s, size_t len) {
   __m128i k = _mm_set1_epi32(0xe6546b64);
   __m128i q;
   if (len < 80) {
-    __m128i a = Load128(s);
-    __m128i b = Load128(s + 16);
-    __m128i c = Load128(s + (len - 15) / 2);
-    __m128i d = Load128(s + len - 32);
-    __m128i e = Load128(s + len - 16);
+    __m128i a = Fetch128(s);
+    __m128i b = Fetch128(s + 16);
+    __m128i c = Fetch128(s + (len - 15) / 2);
+    __m128i d = Fetch128(s + len - 32);
+    __m128i e = Fetch128(s + len - 16);
     h = Add(h, a);
     g = Add(g, b);
     q = g;
@@ -122,11 +119,11 @@ uint32_t Hash32(const char *s, size_t len) {
 
 #undef Chunk
 #define Chunk() do {                            \
-  __m128i a = Load128(s);                       \
-  __m128i b = Load128(s + 16);                  \
-  __m128i c = Load128(s + 32);                  \
-  __m128i d = Load128(s + 48);                  \
-  __m128i e = Load128(s + 64);                  \
+  __m128i a = Fetch128(s);                      \
+  __m128i b = Fetch128(s + 16);                 \
+  __m128i c = Fetch128(s + 32);                 \
+  __m128i d = Fetch128(s + 48);                 \
+  __m128i e = Fetch128(s + 64);                 \
   h = Add(h, a);                                \
   g = Add(g, b);                                \
   g = Shuffle0321(g);                           \
@@ -136,7 +133,7 @@ uint32_t Hash32(const char *s, size_t len) {
   f = Add(f, h);                                \
   h = Add(h, d);                                \
   q = Add(q, e);                                \
-  h = Rot17(h);                                 \
+  h = Rol17(h);                                 \
   h = Mulc1(h);                                 \
   k = Xor(k, _mm_shuffle_epi8(g, f));           \
   g = Add(Xor(c, g), a);                        \

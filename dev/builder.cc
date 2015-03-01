@@ -64,16 +64,22 @@ string ToUpper(const string& s) {
 void DoWithNoOutputExpected(const string& s) {
   static int counter = 0;
   cout << s << '\n';
-  string o = dir + "/e_" + itoa(counter++);
+  const string o = dir + "/e_" + itoa(counter++);
   string cmd = "(" + s + ")>&" + o;
-  int r = System(cmd);
-  assert(r == 0);
+  const int r = System(cmd);
+  const bool success = r == 0;
   cmd = "cmp -s /dev/null " + o;
-  if (System(cmd) == 0) return;
-  cerr << "Expected no output from '" << s << "' but got:";
-  cmd = "cat " + o;
-  r = System(cmd);
-  assert(r == 0);
+  const bool no_output = System(cmd) == 0;
+  if (no_output && success) return;
+  if (!no_output) {
+    cerr << "Expected no output from '" << s << "' but got:";
+    cmd = "cat " + o;
+    const int q = System(cmd);
+    assert(q == 0);
+  }
+  if (r != 0) {
+    cerr << "Expected exit code 0 from '" << s << "' but got " << r << '\n';
+  }
   abort();
 }
 
@@ -167,6 +173,9 @@ static unordered_map<string, vector<string>>* deps = NULL;
 
 static int files_included = 0;
 
+// We need the code in the given namespace.  If it depends on code
+// in other namespaces then process those first.  Do nothing if
+// the given namespace has already been handled by this function.
 void IncludeCode(const string& name) {
   static unordered_set<string>* started = NULL;
   static unordered_set<string>* finished = NULL;
@@ -228,11 +237,17 @@ void ModifySMHasherForTest(const string& nspace,
                            const string& fn,
                            const string& testdir) {
   IncludeCode(nspace);
+  // For the calculation of v, use an explicit temporary file to avoid
+  // "fgrep: write error: Broken pipe" errors.
+  const string tmp = testdir + "/tmp";
   vector<string> v =
       DoAndCollectOutput("cat " + dir + "/" + nspace + "*.cc | "
                          "fgrep -v -i static | "
-                         "fgrep '{' | "
-                         "fgrep --max-count=1 ' " + fn + "(const char'");
+                         "fgrep '{' > " + tmp +
+                         " && "
+                         "fgrep --max-count=1 ' " + fn + "(const char' " + tmp +
+                         " && " +
+                         "rm " + tmp);
   assert(v.size() == 1);
   const string defline = v[0];
   if (defline[defline.size() - 1] != '{') {
@@ -267,8 +282,14 @@ void ModifySMHasherForTest(const string& nspace,
                          "  { WRAPPER, " + bits + ", 0/*verification code*/, " +
                          q + ", " + q + " },"
                          "' main.cpp");
+  // Add a special-case to SMHasher for when the expected
+  // "verification value" is zero:  If the computed verification value is
+  // non-zero but the expected value is zero then don't report an error.
+  DoWithNoOutputExpected("cd " + testdir + " && "
+                         "sed -i 's/\\(.*print.*Verification value.*Failed\\)/"
+                         "    if(expected == 0) return true;\\1/' KeysetTest.cpp");
   // Modify CMakeLists.txt if needed
-  char *t = getenv("CMAKE32");
+  char* t = getenv("CMAKE32");
   if (t != NULL && t[0] != '\0' && t[0] != '0') {
     string f = testdir + "/CMakeLists.txt";
     string ftmp = f + ".tmp";
@@ -323,6 +344,8 @@ void Test(const string& tests) {
   DoAndShowOutput(string("./do-in-parallel -k ") + parallelism +
                   " " + testsfile + " || echo FAILED");
   DoAndShowOutput("grep -B 9 -i fail " + dir + "/test*/part* || echo nothing");
+  cout << "\nSummary of '!!!!!' and tests with expected number of collisions in [0.1, 1):\n\n";
+  DoAndShowOutput("egrep 'collisions.*Expected.* 0[.][1-9].*, actual|!!!!!' " + dir + "/test*/part*");
 }
 
 // Note the cases where, for example something in farmhashxy calls something in
@@ -393,6 +416,20 @@ int main(int argc, char** argv) {
   DoWithNoOutputExpected("cd " + dir + " && g++ -m32 -c " + src);
   DoWithNoOutputExpected("cd " + dir + " && g++ -O3 -c " + src);
   DoWithNoOutputExpected("cd " + dir + " && g++ -m32 -O3 -c " + src);
+  const char* build_flag_tests = getenv("BUILD_FLAG_TESTS");
+  if (build_flag_tests != NULL) {
+    string z = build_flag_tests;
+    int b = 0, e = z.size();
+    while (b < e) {
+      int c = b;
+      while (c < e && z[c] != '|') {
+        ++c;
+      }
+      string flags(z.data() + b, z.data() + c);
+      DoWithNoOutputExpected("cd " + dir + " && g++ " + flags + " -c " + src);
+      b = c + 1;
+    }
+  }
   // Copy files to ../src
   DoWithNoOutputExpected("cp -f farmhash.h " + src + " ../src && "
                          "mv ../src/$(basename " + src + ") ../src/farmhash.cc");
@@ -415,7 +452,7 @@ int main(int argc, char** argv) {
                   " f=${i%_gen.cc}_selftest0.cc; ./create-self-test $i $f &&"
                   " pushd " + dir + " && echo $i &&"
                   " cat " + src + " $f > " + m + " &&"
-                  " g++ -maes -msse4.2 " + m + " && ./a.out > tmp.cc && popd &&"
+                  " g++ -maes -msse4.2 -msse4.1 -mssse3 " + m + " && ./a.out > tmp.cc && popd &&"
                   " l=$(fgrep -n 'if TESTING' $f | head -1 | cut -f 1 -d :) &&"
                   " (head -n $l $f | sed -e 's/define TESTING 0/define TESTING 1/' -e \"s/define NUM_SELF_TESTS 0/define NUM_SELF_TESTS $count/\"; cat " + dir + "/tmp.cc;"
                   " tail -n +$((l + 1)) $f) > ${i%_gen.cc}_selftest1.cc; "
@@ -427,7 +464,7 @@ int main(int argc, char** argv) {
 
   // Step 5: Quality testing
   d = getenv("TEST");
-  if (d != NULL) {
+  if (d != NULL && d[0] != '\0') {
     cout << "Step 5\n";
     Test(d);
   }

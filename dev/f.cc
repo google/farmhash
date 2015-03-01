@@ -6,14 +6,10 @@ namespace NAMESPACE_FOR_HASH_FUNCTIONS {
 // May change from time to time, may differ on different platforms, may differ
 // depending on NDEBUG.
 uint32_t Hash32(const char* s, size_t len) {
-  if (can_use_sse42 & can_use_aesni & x86_64)
-    return DebugTweak(farmhashns::Hash32(s, len));
-
   return DebugTweak(
-      (can_use_sse42 & can_use_aesni) ?
-      farmhashsu::Hash32(s, len) :
-      can_use_sse42 ?
-      farmhashsa::Hash32(s, len) :
+      (can_use_sse41 & x86_64) ? farmhashnt::Hash32(s, len) :
+      (can_use_sse42 & can_use_aesni) ? farmhashsu::Hash32(s, len) :
+      can_use_sse42 ? farmhashsa::Hash32(s, len) :
       farmhashmk::Hash32(s, len));
 }
 
@@ -22,14 +18,10 @@ uint32_t Hash32(const char* s, size_t len) {
 // May change from time to time, may differ on different platforms, may differ
 // depending on NDEBUG.
 uint32_t Hash32WithSeed(const char* s, size_t len, uint32_t seed) {
-  if (can_use_sse42 & can_use_aesni & x86_64)
-    return DebugTweak(farmhashns::Hash32WithSeed(s, len, seed));
-
   return DebugTweak(
-      (can_use_sse42 & can_use_aesni) ?
-      farmhashsu::Hash32WithSeed(s, len, seed) :
-      can_use_sse42 ?
-      farmhashsa::Hash32WithSeed(s, len, seed) :
+      (can_use_sse41 & x86_64) ? farmhashnt::Hash32WithSeed(s, len, seed) :
+      (can_use_sse42 & can_use_aesni) ? farmhashsu::Hash32WithSeed(s, len, seed) :
+      can_use_sse42 ? farmhashsa::Hash32WithSeed(s, len, seed) :
       farmhashmk::Hash32WithSeed(s, len, seed));
 }
 
@@ -38,7 +30,10 @@ uint32_t Hash32WithSeed(const char* s, size_t len, uint32_t seed) {
 // May change from time to time, may differ on different platforms, may differ
 // depending on NDEBUG.
 uint64_t Hash64(const char* s, size_t len) {
-  return DebugTweak(farmhashna::Hash64(s, len));
+  return DebugTweak(
+      (can_use_sse42 & x86_64) ?
+      farmhashte::Hash64(s, len) :
+      farmhashxo::Hash64(s, len));
 }
 
 // Hash function for a byte array.
@@ -97,5 +92,8 @@ uint64_t Fingerprint64(const char* s, size_t len) {
 uint128_t Fingerprint128(const char* s, size_t len) {
   return farmhashcc::Fingerprint128(s, len);
 }
+
+// Older and still available but perhaps not as fast as the above:
+//   farmhashns::Hash32{,WithSeed}()
 
 }  // namespace NAMESPACE_FOR_HASH_FUNCTIONS

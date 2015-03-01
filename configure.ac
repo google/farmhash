@@ -1,11 +1,11 @@
 m4_define([farmhash_major], [1])
-m4_define([farmhash_minor], [0])
+m4_define([farmhash_minor], [1])
 m4_define([farmhash_patchlevel], [0])
 
 # Libtool shared library interface versions (current:revision:age)
 # Update this value for every release!  (A:B:C will map to foo.so.(A-C).C.B)
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-m4_define([farmhash_ltversion], [1:0:0])
+m4_define([farmhash_ltversion], [2:0:0])
 
 AC_PREREQ([2.65])
 AC_INIT([FarmHash], [farmhash_major.farmhash_minor.farmhash_patchlevel], [farmhash-discuss@googlegroups.com])

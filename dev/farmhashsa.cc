@@ -88,11 +88,11 @@ uint32_t Hash32(const char *s, size_t len) {
   __m128i f = g;
   __m128i k = _mm_set1_epi32(0xe6546b64);
   if (len < 80) {
-    __m128i a = Load128(s);
-    __m128i b = Load128(s + 16);
-    __m128i c = Load128(s + (len - 15) / 2);
-    __m128i d = Load128(s + len - 32);
-    __m128i e = Load128(s + len - 16);
+    __m128i a = Fetch128(s);
+    __m128i b = Fetch128(s + 16);
+    __m128i c = Fetch128(s + (len - 15) / 2);
+    __m128i d = Fetch128(s + len - 32);
+    __m128i e = Fetch128(s + len - 16);
     h = Add(h, a);
     g = Add(g, b);
     g = Shuffle0321(g);
@@ -117,11 +117,11 @@ uint32_t Hash32(const char *s, size_t len) {
 
 #undef Chunk
 #define Chunk() do {                            \
-  __m128i a = Load128(s);                       \
-  __m128i b = Load128(s + 16);                  \
-  __m128i c = Load128(s + 32);                  \
-  __m128i d = Load128(s + 48);                  \
-  __m128i e = Load128(s + 64);                  \
+  __m128i a = Fetch128(s);                       \
+  __m128i b = Fetch128(s + 16);                  \
+  __m128i c = Fetch128(s + 32);                  \
+  __m128i d = Fetch128(s + 48);                  \
+  __m128i e = Fetch128(s + 64);                  \
   h = Add(h, a);                                \
   g = Add(g, b);                                \
   g = Shuffle0321(g);                           \
