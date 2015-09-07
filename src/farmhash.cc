@@ -1787,7 +1787,7 @@ STATIC_INLINE uint128_t CityMurmur(const char *s, size_t len, uint128_t seed) {
   }
   a = HashLen16(a, c);
   b = HashLen16(d, b);
-  return uint128_t(a ^ b, HashLen16(b, a));
+  return Uint128(a ^ b, HashLen16(b, a));
 }
 
 uint128_t CityHash128WithSeed(const char *s, size_t len, uint128_t seed) {
@@ -1849,15 +1849,15 @@ uint128_t CityHash128WithSeed(const char *s, size_t len, uint128_t seed) {
   // different 56-byte-to-8-byte hashes to get a 16-byte final result.
   x = HashLen16(x, v.first);
   y = HashLen16(y + z, w.first);
-  return uint128_t(HashLen16(x + v.second, w.second) + y,
-                   HashLen16(x + w.second, y + v.second));
+  return Uint128(HashLen16(x + v.second, w.second) + y,
+                 HashLen16(x + w.second, y + v.second));
 }
 
 STATIC_INLINE uint128_t CityHash128(const char *s, size_t len) {
   return len >= 16 ?
       CityHash128WithSeed(s + 16, len - 16,
-                          uint128_t(Fetch(s), Fetch(s + 8) + k0)) :
-      CityHash128WithSeed(s, len, uint128_t(k0, k1));
+                          Uint128(Fetch(s), Fetch(s + 8) + k0)) :
+      CityHash128WithSeed(s, len, Uint128(k0, k1));
 }
 
 uint128_t Fingerprint128(const char* s, size_t len) {
