@@ -56,6 +56,11 @@
 namespace NAMESPACE_FOR_HASH_FUNCTIONS {
 
 #if defined(FARMHASH_UINT128_T_DEFINED)
+#if defined(__clang__)
+#if !defined(uint128_t)
+#define uint128_t __uint128_t
+#endif
+#endif
 inline uint64_t Uint128Low64(const uint128_t x) {
   return static_cast<uint64_t>(x);
 }
