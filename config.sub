@@ -1,8 +1,14 @@
 #! /bin/sh
 # Configuration validation subroutine script.
+<<<<<<< HEAD
 #   Copyright 1992-2016 Free Software Foundation, Inc.
 
 timestamp='2016-06-20'
+=======
+#   Copyright 1992-2015 Free Software Foundation, Inc.
+
+timestamp='2015-08-20'
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -67,7 +73,11 @@ Report bugs and patches to <config-patches@gnu.org>."
 version="\
 GNU config.sub ($timestamp)
 
+<<<<<<< HEAD
 Copyright 1992-2016 Free Software Foundation, Inc.
+=======
+Copyright 1992-2015 Free Software Foundation, Inc.
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
@@ -520,7 +530,11 @@ case $basic_machine in
 		basic_machine=i386-pc
 		os=-aros
 		;;
+<<<<<<< HEAD
 	asmjs)
+=======
+        asmjs)
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 		basic_machine=asmjs-unknown
 		;;
 	aux)
@@ -1390,14 +1404,22 @@ case $os in
 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+<<<<<<< HEAD
 	      | -bitrig* | -openbsd* | -solidbsd* | -libertybsd* \
+=======
+	      | -bitrig* | -openbsd* | -solidbsd* \
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 	      | -ekkobsd* | -kfreebsd* | -freebsd* | -riscix* | -lynxos* \
 	      | -bosx* | -nextstep* | -cxux* | -aout* | -elf* | -oabi* \
 	      | -ptx* | -coff* | -ecoff* | -winnt* | -domain* | -vsta* \
 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
 	      | -chorusos* | -chorusrdb* | -cegcc* \
 	      | -cygwin* | -msys* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
+<<<<<<< HEAD
 	      | -midipix* | -mingw32* | -mingw64* | -linux-gnu* | -linux-android* \
+=======
+	      | -mingw32* | -mingw64* | -linux-gnu* | -linux-android* \
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 	      | -linux-newlib* | -linux-musl* | -linux-uclibc* \
 	      | -uxpv* | -beos* | -mpeix* | -udk* | -moxiebox* \
 	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
@@ -1406,8 +1428,12 @@ case $os in
 	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
 	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
 	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
+<<<<<<< HEAD
 	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es* \
 	      | -onefs* | -tirtos* | -phoenix*)
+=======
+	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es* | -tirtos*)
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 	# Remember, each alternative MUST END IN *, to match a version number.
 		;;
 	-qnx*)
@@ -1539,8 +1565,11 @@ case $os in
 		;;
 	-nacl*)
 		;;
+<<<<<<< HEAD
 	-ios)
 		;;
+=======
+>>>>>>> 96e46782298bdf50ac214ab1920e4eb49f7a0cda
 	-none)
 		;;
 	*)
