@@ -34,5 +34,3 @@
 #define FARMHASH_DIE_IF_MISCONFIGURED do { return 0; } while (0)
 
 #include "farmhash.cc"
-
-int main() {}

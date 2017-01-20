@@ -3571,11 +3571,7 @@ cout << farmhashcc::Hash32(data + offset, len) << "u," << endl;
 
 }  // namespace farmhashccTest
 
-#if TESTING
-
-static int farmhashccTestResult = farmhashccTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -4467,11 +4463,7 @@ cout << farmhashmk::Hash32(data + offset, len) << "u," << endl;
 
 }  // namespace farmhashmkTest
 
-#if TESTING
-
-static int farmhashmkTestResult = farmhashmkTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -5727,11 +5719,7 @@ void Dump(int offset, int len) {
 
 }  // namespace farmhashnaTest
 
-#if TESTING
-
-static int farmhashnaTestResult = farmhashnaTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -6623,11 +6611,7 @@ cout << farmhashnt::Hash32(data + offset, len) << "u," << endl;
 
 }  // namespace farmhashntTest
 
-#if TESTING
-
-static int farmhashntTestResult = farmhashntTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -7519,11 +7503,7 @@ cout << farmhashsa::Hash32(data + offset, len) << "u," << endl;
 
 }  // namespace farmhashsaTest
 
-#if TESTING
-
-static int farmhashsaTestResult = farmhashsaTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -8415,11 +8395,7 @@ cout << farmhashsu::Hash32(data + offset, len) << "u," << endl;
 
 }  // namespace farmhashsuTest
 
-#if TESTING
-
-static int farmhashsuTestResult = farmhashsuTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -9675,11 +9651,7 @@ void Dump(int offset, int len) {
 
 }  // namespace farmhashteTest
 
-#if TESTING
-
-static int farmhashteTestResult = farmhashteTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -10571,11 +10543,7 @@ void Dump(int offset, int len) {
 
 }  // namespace farmhashuoTest
 
-#if TESTING
-
-static int farmhashuoTestResult = farmhashuoTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -11831,11 +11799,7 @@ void Dump(int offset, int len) {
 
 }  // namespace farmhashxoTest
 
-#if TESTING
-
-static int farmhashxoTestResult = farmhashxoTest::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
@@ -11850,5 +11814,18 @@ int main(int argc, char** argv) {
   cout << "};\n";
 }
 #endif
+
+int main() {
+  farmhashccTest::RunTest();
+  farmhashmkTest::RunTest();
+  farmhashnaTest::RunTest();
+  farmhashntTest::RunTest();
+  farmhashsaTest::RunTest();
+  farmhashsuTest::RunTest();
+  farmhashteTest::RunTest();
+  farmhashuoTest::RunTest();
+  farmhashxoTest::RunTest();
+  __builtin_unreachable();
+}
 
 #endif  // FARMHASHSELFTEST
