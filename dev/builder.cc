@@ -459,6 +459,14 @@ int main(int argc, char** argv) {
                   "done");
   DoWithNoOutputExpected("(echo; echo '#if FARMHASHSELFTEST'; echo;"
                          " cat " + dir + "/*_selftest1.cc;"
+                         " echo; echo 'int main() {';"
+                         " for i in " + dir + "/*_gen.cc; "
+                         " do"
+                         "   namespace=$(basename ${i%_gen.cc});"
+                         "   echo '  '${namespace}'Test::RunTest();';"
+                         " done;"
+                         " echo '  __builtin_unreachable();';"
+                         " echo '}';"
                          " echo; echo '#endif  // FARMHASHSELFTEST') "
                          ">> ../src/farmhash.cc");
 

@@ -144,11 +144,7 @@ void Dump(int offset, int len) {
 
 }  // namespace SKELETON
 
-#if TESTING
-
-static int SKELETONResult = SKELETON::RunTest();
-
-#else
+#if !TESTING
 int main(int argc, char** argv) {
   Setup();
   cout << "uint32_t expected[] = {\n";
