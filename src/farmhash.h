@@ -96,7 +96,6 @@ uint32_t Hash32(const char* s, size_t len);
 // depending on NDEBUG.
 uint32_t Hash32WithSeed(const char* s, size_t len, uint32_t seed);
 
-// Hash 128 input bits down to 64 bits of output.
 // Hash function for a byte array.
 // May change from time to time, may differ on different platforms, may differ
 // depending on NDEBUG.
@@ -128,6 +127,7 @@ uint128_t Hash128WithSeed(const char* s, size_t len, uint128_t seed);
 
 // BASIC NON-STRING HASHING
 
+// Hash 128 input bits down to 64 bits of output.
 // This is intended to be a reasonably good hash function.
 // May change from time to time, may differ on different platforms, may differ
 // depending on NDEBUG.
