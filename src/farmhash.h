@@ -292,4 +292,24 @@ inline uint128_t Fingerprint128(const Str& s) {
 
 }  // namespace NAMESPACE_FOR_HASH_FUNCTIONS
 
+/* gently define FARMHASH_BIG_ENDIAN when detected big-endian machine */
+#if defined(__BIG_ENDIAN__)
+  #if !defined(FARMHASH_BIG_ENDIAN)
+    #define FARMHASH_BIG_ENDIAN
+  #endif
+#elif defined(__LITTLE_ENDIAN)
+  // nothing for little-endian
+#else
+  #include <endian.h> // libc6-dev, GLIBC
+  #if defined(__BYTE_ORDER) && (__BYTE_ORDER == __BIG_ENDIAN)
+    #if !defined(FARMHASH_BIG_ENDIAN)
+      #define FARMHASH_BIG_ENDIAN
+    #endif
+  #elif defined(__BYTE_ORDER) && (__BYTE_ORDER == __LITTLE_ENDIAN)
+    // nothing for little-endian
+  #else
+    #error "Unable to determine endianness!"
+  #endif /* __BYTE_ORDER__ */
+#endif /* __BIG_ENDIAN__ */
+
 #endif  // FARM_HASH_H_
