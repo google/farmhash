@@ -312,7 +312,7 @@ inline uint128_t Fingerprint128(const Str& s) {
       #define FARMHASH_BIG_ENDIAN
     #endif
   #endif
-#elif defined(__OpenBSD__) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__)
+#elif defined(__OpenBSD__) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__) || defined(__s390x__)
   #include <sys/endian.h>
   #if BYTE_ORDER == BIG_ENDIAN
     #if !defined(FARMHASH_BIG_ENDIAN)
