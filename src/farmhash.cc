@@ -165,6 +165,15 @@
 #define bswap_64(x) bswap64(x)
 #endif
 
+#elif defined(__HAIKU__)
+
+#define _BSD_SOURCE
+#include <bsd/endian.h>
+#undef bswap_32
+#undef bswap_64
+#define bswap_32(x) bswap32(x)
+#define bswap_64(x) bswap64(x)
+
 #else
 
 #undef bswap_32
