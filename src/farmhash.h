@@ -297,19 +297,32 @@ inline uint128_t Fingerprint128(const Str& s) {
   #if !defined(FARMHASH_BIG_ENDIAN)
     #define FARMHASH_BIG_ENDIAN
   #endif
-#elif defined(__LITTLE_ENDIAN)
+#elif defined(__LITTLE_ENDIAN__)
   // nothing for little-endian
-#else
+#elif defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && (__BYTE_ORDER == __ORDER_LITTLE_ENDIAN__)
+  // nothing for little-endian
+#elif defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && (__BYTE_ORDER == __ORDER_BIG_ENDIAN__)
+  #if !defined(FARMHASH_BIG_ENDIAN)
+    #define FARMHASH_BIG_ENDIAN
+  #endif
+#elif defined(__linux__) || defined(__CYGWIN__) || defined( __GNUC__ ) || defined( __GNU_LIBRARY__ )
   #include <endian.h> // libc6-dev, GLIBC
-  #if defined(__BYTE_ORDER) && (__BYTE_ORDER == __BIG_ENDIAN)
+  #if BYTE_ORDER == BIG_ENDIAN
     #if !defined(FARMHASH_BIG_ENDIAN)
       #define FARMHASH_BIG_ENDIAN
     #endif
-  #elif defined(__BYTE_ORDER) && (__BYTE_ORDER == __LITTLE_ENDIAN)
-    // nothing for little-endian
-  #else
-    #error "Unable to determine endianness!"
-  #endif /* __BYTE_ORDER__ */
+  #endif
+#elif defined(__OpenBSD__) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__) || defined(__s390x__)
+  #include <sys/endian.h>
+  #if BYTE_ORDER == BIG_ENDIAN
+    #if !defined(FARMHASH_BIG_ENDIAN)
+      #define FARMHASH_BIG_ENDIAN
+    #endif
+  #endif
+#elif defined(_WIN32)
+  // Windows is (currently) little-endian
+#else
+  #error "Unable to determine endianness!"
 #endif /* __BIG_ENDIAN__ */
 
 #endif  // FARM_HASH_H_

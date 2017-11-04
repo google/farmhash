@@ -138,7 +138,7 @@
 #define bswap_32(x) BSWAP_32(x)
 #define bswap_64(x) BSWAP_64(x)
 
-#elif defined(__FreeBSD__)
+#elif defined(__FreeBSD__) || defined(__DragonFly__)
 
 #include <sys/endian.h>
 #undef bswap_32
@@ -164,6 +164,15 @@
 #define bswap_32(x) bswap32(x)
 #define bswap_64(x) bswap64(x)
 #endif
+
+#elif defined(__HAIKU__)
+
+#define _BSD_SOURCE
+#include <bsd/endian.h>
+#undef bswap_32
+#undef bswap_64
+#define bswap_32(x) bswap32(x)
+#define bswap_64(x) bswap64(x)
 
 #else
 
