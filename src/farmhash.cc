@@ -1973,6 +1973,9 @@ uint128_t Fingerprint128(const char* s, size_t len) {
 
 }  // namespace NAMESPACE_FOR_HASH_FUNCTIONS
 
+#ifndef FARMHASHSELFTEST
+#define FARMHASHSELFTEST 0
+#endif
 #if FARMHASHSELFTEST
 
 #ifndef FARMHASH_SELF_TEST_GUARD
