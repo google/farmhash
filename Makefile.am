@@ -16,6 +16,7 @@ MAINTAINERCLEANFILES = \
 	$(srcdir)/compile \
 	$(srcdir)/depcomp \
 	$(srcdir)/missing \
+	$(srcdir)/test-driver \
 	$(srcdir)/config.guess \
 	$(srcdir)/config.sub \ \
 	$(srcdir)/mkinstalldirs \
