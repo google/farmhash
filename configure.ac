@@ -38,9 +38,6 @@ AC_C_BIGENDIAN
 
 # Checks for libraries.
 
-# Checks for header files.
-AC_CHECK_HEADERS([stdint.h stdlib.h])
-
 # Checks for typedefs, structures, and compiler characteristics.
 #AC_C_INLINE
 #AC_TYPE_SIZE_T

@@ -1979,7 +1979,7 @@ uint128_t Fingerprint128(const char* s, size_t len) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -3599,7 +3599,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -4491,7 +4491,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -5747,7 +5747,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -6639,7 +6639,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -7531,7 +7531,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -8423,7 +8423,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -9679,7 +9679,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -10571,7 +10571,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;

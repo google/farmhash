@@ -2,7 +2,7 @@
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
