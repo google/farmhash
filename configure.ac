@@ -76,6 +76,9 @@ if test x$farmhash_have_builtin_bswap = xyes ; then
     AC_DEFINE([HAVE_BUILTIN_BSWAP], [1], [Define to 1 if the compiler supports __builtin_bswap32.])
 fi
 
+# Compile the unittest.
+AM_CONDITIONAL([FARMHASH_UNITTEST], [true])
+
 AC_OUTPUT
 
 echo \
