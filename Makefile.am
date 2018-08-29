@@ -2,3 +2,23 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = src
 
 dist_doc_DATA = README NEWS COPYING Understanding_Hash_Functions dev/basics.cc dev/builder.cc dev/cmake_m32 dev/create-self-test dev/do-in-parallel dev/farmhashcc.cc dev/farmhash.h dev/farmhashmk.cc dev/farmhashna.cc dev/farmhashns.cc dev/farmhashnt.cc dev/farmhashsa.cc dev/farmhashsu.cc dev/farmhashte.cc dev/farmhashuo.cc dev/farmhashxo.cc dev/f.cc dev/fix-copyright dev/INSTRUCTIONS dev/PATCH dev/platform.cc dev/remove-from-to dev/SELFTESTCityHash128WithSeed dev/SELFTESTFingerprint128 dev/SELFTESTHash32 dev/SELFTESTHash32WithSeed dev/SELFTESTHash64 dev/SELFTESTHash64WithSeed dev/SELFTESTHash64WithSeeds dev/self-test-skeleton.cc dev/TESTBOILERPLATEHash32 dev/TESTBOILERPLATEHash32WithSeed dev/TESTBOILERPLATEHash64 dev/TESTBOILERPLATEHash64WithSeed dev/TESTBOILERPLATEHash64WithSeeds dev/WRAPPERuint32tconstcharssizetlen dev/WRAPPERuint32tconstcharssizetlenuint32tseed dev/WRAPPERuint32tconstcharssizetlenuint64tseed dev/WRAPPERuint32tconstcharssizetlenuint64tseed0uint64tseed1 dev/WRAPPERuint64tconstcharssizetlen dev/WRAPPERuint64tconstcharssizetlenuint64tseed dev/WRAPPERuint64tconstcharssizetlenuint64tseed0uint64tseed1
+
+maintainer-clean-local:
+	rm -rf $(srcdir)/m4
+
+MAINTAINERCLEANFILES = \
+	$(srcdir)/aclocal.m4 \
+	$(srcdir)/configure \
+	$(srcdir)/Makefile.in \
+	$(srcdir)/install-sh \
+	$(srcdir)/config.h.in \
+	$(srcdir)/config.h.in~ \
+	$(srcdir)/compile \
+	$(srcdir)/depcomp \
+	$(srcdir)/missing \
+	$(srcdir)/config.guess \
+	$(srcdir)/config.sub \ \
+	$(srcdir)/mkinstalldirs \
+	$(srcdir)/ltmain.sh \
+	$(srcdir)/stamp-h.in \
+	$(srcdir)/ChangeLog

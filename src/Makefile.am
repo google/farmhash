@@ -8,3 +8,5 @@ farmhash_unittest_SOURCES = farm-test.cc
 farmhash_unittest_LDADD = libfarmhash.la
 TESTS = farmhash_unittest
 noinst_PROGRAMS = $(TESTS)
+
+MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
