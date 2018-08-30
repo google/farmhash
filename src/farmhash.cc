@@ -51,7 +51,7 @@
 #define FARMHASH_ASSUME_AVX 1
 #endif
 
-#if !defined(FARMHASH_CAN_USE_CXX11) && defined(LANG_CXX11)
+#if !defined(FARMHASH_CAN_USE_CXX11) && __cplusplus >= 201103L
 #define FARMHASH_CAN_USE_CXX11 1
 #else
 #undef FARMHASH_CAN_USE_CXX11
