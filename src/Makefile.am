@@ -1,6 +1,7 @@
 # library
 lib_LTLIBRARIES = libfarmhash.la
 libfarmhash_la_SOURCES = farmhash.cc
+libfarmhash_la_CXXFLAGS = -O2
 include_HEADERS = farmhash.h
 
 # test
