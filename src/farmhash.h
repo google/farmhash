@@ -305,7 +305,7 @@ inline uint128_t Fingerprint128(const Str& s) {
   #if !defined(FARMHASH_BIG_ENDIAN)
     #define FARMHASH_BIG_ENDIAN
   #endif
-#elif defined(__linux__) || defined(__CYGWIN__) || defined( __GNUC__ ) || defined( __GNU_LIBRARY__ )
+#elif defined(__linux__) || defined(__CYGWIN__) || defined( __GNUC__ ) && !defined(_WIN32) || defined( __GNU_LIBRARY__ )
   #include <endian.h> // libc6-dev, GLIBC
   #if BYTE_ORDER == BIG_ENDIAN
     #if !defined(FARMHASH_BIG_ENDIAN)
