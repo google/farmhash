@@ -178,6 +178,7 @@
 
 #undef bswap_32
 #undef bswap_64
+#undef _BYTESWAP_H
 #include <byteswap.h>
 
 #endif
