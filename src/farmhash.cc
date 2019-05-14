@@ -51,7 +51,7 @@
 #define FARMHASH_ASSUME_AVX 1
 #endif
 
-#if !defined(FARMHASH_CAN_USE_CXX11) && defined(LANG_CXX11)
+#if !defined(FARMHASH_CAN_USE_CXX11) && __cplusplus >= 201103L
 #define FARMHASH_CAN_USE_CXX11 1
 #else
 #undef FARMHASH_CAN_USE_CXX11
@@ -412,7 +412,6 @@ template <> uint128_t DebugTweak(uint128_t x) {
 
 }  // namespace NAMESPACE_FOR_HASH_FUNCTIONS
 
-using namespace std;
 using namespace NAMESPACE_FOR_HASH_FUNCTIONS;
 namespace farmhashna {
 #undef Fetch
@@ -481,7 +480,7 @@ STATIC_INLINE uint64_t HashLen17to32(const char *s, size_t len) {
 
 // Return a 16-byte hash for 48 bytes.  Quick and dirty.
 // Callers do best to use "random-looking" values for a and b.
-STATIC_INLINE pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
+STATIC_INLINE std::pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
     uint64_t w, uint64_t x, uint64_t y, uint64_t z, uint64_t a, uint64_t b) {
   a += w;
   b = Rotate(b + a + z, 21);
@@ -489,11 +488,11 @@ STATIC_INLINE pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
   a += x;
   a += y;
   b += Rotate(a, 44);
-  return make_pair(a + z, b + c);
+  return std::make_pair(a + z, b + c);
 }
 
 // Return a 16-byte hash for s[0] ... s[31], a, and b.  Quick and dirty.
-STATIC_INLINE pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
+STATIC_INLINE std::pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
     const char* s, uint64_t a, uint64_t b) {
   return WeakHashLen32WithSeeds(Fetch(s),
                                 Fetch(s + 8),
@@ -537,8 +536,8 @@ uint64_t Hash64(const char *s, size_t len) {
   uint64_t x = seed;
   uint64_t y = seed * k1 + 113;
   uint64_t z = ShiftMix(y * k2 + 113) * k2;
-  pair<uint64_t, uint64_t> v = make_pair(0, 0);
-  pair<uint64_t, uint64_t> w = make_pair(0, 0);
+  std::pair<uint64_t, uint64_t> v = std::make_pair(0, 0);
+  std::pair<uint64_t, uint64_t> w = std::make_pair(0, 0);
   x = x * k2 + Fetch(s);
 
   // Set end so that after the loop we have 1 to 64 bytes left to process.
@@ -610,8 +609,8 @@ uint64_t Hash64WithSeeds(const char *s, size_t len,
   uint64_t x = seed0;
   uint64_t y = seed1 * k2 + 113;
   uint64_t z = farmhashna::ShiftMix(y * k2) * k2;
-  pair<uint64_t, uint64_t> v = make_pair(seed0, seed1);
-  pair<uint64_t, uint64_t> w = make_pair(0, 0);
+  std::pair<uint64_t, uint64_t> v = std::make_pair(seed0, seed1);
+  std::pair<uint64_t, uint64_t> w = std::make_pair(0, 0);
   uint64_t u = x - z;
   x *= k2;
   uint64_t mul = k2 + (u & 0x82);
@@ -1744,7 +1743,7 @@ STATIC_INLINE uint64_t HashLen0to16(const char *s, size_t len) {
 
 // Return a 16-byte hash for 48 bytes.  Quick and dirty.
 // Callers do best to use "random-looking" values for a and b.
-STATIC_INLINE pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
+STATIC_INLINE std::pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
     uint64_t w, uint64_t x, uint64_t y, uint64_t z, uint64_t a, uint64_t b) {
   a += w;
   b = Rotate(b + a + z, 21);
@@ -1752,11 +1751,11 @@ STATIC_INLINE pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
   a += x;
   a += y;
   b += Rotate(a, 44);
-  return make_pair(a + z, b + c);
+  return std::make_pair(a + z, b + c);
 }
 
 // Return a 16-byte hash for s[0] ... s[31], a, and b.  Quick and dirty.
-STATIC_INLINE pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
+STATIC_INLINE std::pair<uint64_t, uint64_t> WeakHashLen32WithSeeds(
     const char* s, uint64_t a, uint64_t b) {
   return WeakHashLen32WithSeeds(Fetch(s),
                                 Fetch(s + 8),
@@ -1807,7 +1806,7 @@ uint128_t CityHash128WithSeed(const char *s, size_t len, uint128_t seed) {
 
   // We expect len >= 128 to be the common case.  Keep 56 bytes of state:
   // v, w, x, y, and z.
-  pair<uint64_t, uint64_t> v, w;
+  std::pair<uint64_t, uint64_t> v, w;
   uint64_t x = Uint128Low64(seed);
   uint64_t y = Uint128High64(seed);
   uint64_t z = len * k1;
@@ -1974,13 +1973,16 @@ uint128_t Fingerprint128(const char* s, size_t len) {
 
 }  // namespace NAMESPACE_FOR_HASH_FUNCTIONS
 
+#ifndef FARMHASHSELFTEST
+#define FARMHASHSELFTEST 0
+#endif
 #if FARMHASHSELFTEST
 
 #ifndef FARMHASH_SELF_TEST_GUARD
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -3600,7 +3602,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -4492,7 +4494,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -5748,7 +5750,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -6640,7 +6642,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -7532,7 +7534,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -8424,7 +8426,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -9680,7 +9682,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -10572,7 +10574,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;

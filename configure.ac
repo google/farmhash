@@ -38,9 +38,6 @@ AC_C_BIGENDIAN
 
 # Checks for libraries.
 
-# Checks for header files.
-AC_CHECK_HEADERS([stdint.h stdlib.h])
-
 # Checks for typedefs, structures, and compiler characteristics.
 #AC_C_INLINE
 #AC_TYPE_SIZE_T
@@ -78,6 +75,9 @@ AC_COMPILE_IFELSE(
 if test x$farmhash_have_builtin_bswap = xyes ; then
     AC_DEFINE([HAVE_BUILTIN_BSWAP], [1], [Define to 1 if the compiler supports __builtin_bswap32.])
 fi
+
+# Compile the unittest.
+AM_CONDITIONAL([FARMHASH_UNITTEST], [true])
 
 AC_OUTPUT
 
