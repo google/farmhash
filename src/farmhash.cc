@@ -73,7 +73,7 @@
 // FARMHASH PORTABILITY LAYER: LIKELY and UNLIKELY
 
 #if defined(_WIN32)
-#if defined(__has_builtin) && __has_builtin(__builtin_expect))
+#if defined(__has_builtin) && __has_builtin(__builtin_expect)
 #define HAVE_BUILTIN_EXPECT
 #else
 #define FARMHASH_NO_BUILTIN_EXPECT // no __has_builtin or __builtin_expect
@@ -11843,7 +11843,7 @@ int main() {
   farmhashteTest::RunTest();
   farmhashuoTest::RunTest();
   farmhashxoTest::RunTest();
-#if defined(__has_builtin) && __has_builtin(__builtin_unreachable))
+#if defined(__has_builtin) && __has_builtin(__builtin_unreachable)
   __builtin_unreachable();
 #endif
 }
