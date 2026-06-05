@@ -51,7 +51,7 @@
 #define FARMHASH_ASSUME_AVX 1
 #endif
 
-#if !defined(FARMHASH_CAN_USE_CXX11) && defined(LANG_CXX11)
+#if !defined(FARMHASH_CAN_USE_CXX11) && __cplusplus >= 201103L
 #define FARMHASH_CAN_USE_CXX11 1
 #else
 #undef FARMHASH_CAN_USE_CXX11
@@ -1973,13 +1973,16 @@ uint128_t Fingerprint128(const char* s, size_t len) {
 
 }  // namespace NAMESPACE_FOR_HASH_FUNCTIONS
 
+#ifndef FARMHASHSELFTEST
+#define FARMHASHSELFTEST 0
+#endif
 #if FARMHASHSELFTEST
 
 #ifndef FARMHASH_SELF_TEST_GUARD
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -3599,7 +3602,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -4491,7 +4494,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -5747,7 +5750,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -6639,7 +6642,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -7531,7 +7534,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -8423,7 +8426,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -9679,7 +9682,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;
@@ -10571,7 +10574,7 @@ int main(int argc, char** argv) {
 #define FARMHASH_SELF_TEST_GUARD
 #include <cstdio>
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 using std::cout;
 using std::cerr;

@@ -27,9 +27,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
 
 static bool debug = false;
 
